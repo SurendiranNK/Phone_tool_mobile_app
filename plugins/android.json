@@ -1,0 +1,134 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "com.dooble.audiotoggle": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "com.pylonproducts.wifiwizard": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-android-support-gradle-release": {
+      "ANDROID_SUPPORT_VERSION": "27.+",
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-audioinput": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-bluetooth-serial": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-bluetoothle": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-camera": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-camera-preview": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-device-motion": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-device-orientation": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-dialogs": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-file": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-fingerprint-login": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-flashlight": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-geolocation": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-headsetdetection": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-media": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-media-capture": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-native-ringtones": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-opensettings": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-ringermode": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-root-detection": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-sim": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-statusbar": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-touch-id": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-vibration": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-volume-control": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-websocket": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-whitelist": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-x-toast": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova.plugin.Brightness": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cz.blocshop.socketsforcordova": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "org.awokenwell.proximity": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "phonegap-plugin-barcodescanner": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "phonegap-plugin-battery-status": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-websocket-server": {
+      "PACKAGE_NAME": "com.hardware.test"
+    }
+  },
+  "dependent_plugins": {
+    "es6-promise-plugin": {
+      "PACKAGE_NAME": "com.hardware.test"
+    },
+    "cordova-plugin-add-swift-support": {
+      "PACKAGE_NAME": "com.hardware.test"
+    }
+  }
+}
