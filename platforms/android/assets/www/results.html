@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=100%; initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;" />
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Manual Test Result</title>
+
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="css/responsive.css" type="text/css" rel="stylesheet">
+  <link href="css/fonts.css" type="text/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <script type="text/javascript" src="cordova.js"></script>
+ <!--  <script src="http://localhost:3000/socket.io/socket.io.js"></script> -->
+  <script type="text/javascript" src="js/settings.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <!--  <script src="http://192.168.0.246:3000/socket.io/socket.io.js"></script> -->
+ <!--  <script type="text/javascript" charset="utf-8">
+    var socket = io.connect('http://localhost:3000');
+  </script> -->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+
+          <script>
+           if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+              document.createTextNode(
+                '@-ms-viewport{width:auto!important}'
+                )
+              )
+             document.querySelector('head').appendChild(msViewportStyle)
+           }
+           $(document).ready(function(){
+            setTimeout(function(){
+              $(".main-wapper").fadeIn("slow");
+              $(".header-wapper").addClass("animated slideInRight");
+              $(".section-wapper").addClass("animated slideInRight");                
+            }, 300);
+
+            var resultsArray = [
+            {name:'Touchscreen (single touch)',value:'touch_screen_single_touch'},
+            {name:'Touchscreen (multi-touch)',value:'touch_screen_multi_touch'},
+            {name:'Screen Brightness',value:'screen_brighness'},
+            {name:'Dead Pixels',value:'dead_pixel'},
+            {name:'Fingerprint Reader',value:'finger_print'},
+            {name:'Home Button',value:'home_button'},
+            {name:'Volume Buttons',value:'volume_button'},
+            {name:'Silent Mode Switch',value:'silent_mode'},
+            {name:'Vibration',value:'vibration'},
+            {name:'Accelerometer',value:'accelerometer'},
+            {name:'Compass',value:'compass'},
+            {name:'Flashlight',value:'flash_light'},
+            {name:'Camera (front)',value:'Camera_front'},
+            {name:'Camera (back)',value:'Camera_back'},
+            {name:'Microphone',value:'microphone'},
+            {name:'Speaker',value:'speaker'},
+            {name:'Headphone Jack',value:'headphone_jack'},
+            {name:'USB Port',value:'USB_port'},
+            {name:'USB Power',value:'USB_power'},
+            {name:'Proximity Sensor',value:'proximity_sensor'},
+            {name:'Phone Call',value:'phone_call'},
+            {name:'Cosmetic Damage',value:'cosmetic_damage'},
+            {name:'Heavy Damage',value:'heavy_damage'},
+            {name:'Water Damage',value:'water_damage'},
+            {name:'SIM Card',value:'SIM_card'},
+            {name:'GPS',value:'GPS'},
+            {name:'Activation Lock',value:'activation_lock'},
+            {name:'Carrier Lock',value:'carrier_lock'},
+            {name:'Cellular',value:'cellular'},
+            {name:'Bluetooth',value:'bluetooth'},
+            {name:'WiFi',value:'wifi'}            
+            ];
+
+            var postJsonArr = [];             
+            $(resultsArray).each(function(k,v){
+              var resultVal = (Storage.getItem(v.value) != null ? capitalizeFirstLetter(Storage.getItem(v.value)) : " - ");
+              postJsonArr.push({ 'name' : v.name, 'result' : resultVal });
+              var li = '<li class="list-group-item">';
+              li += v.name;
+              li += '<span style="float: right;">'+resultVal+'</span>';
+              li += '</li>';
+              $(".list-group").append(li);            
+            });
+
+
+
+
+
+            saveFile('results_manual.json', JSON.stringify(postJsonArr));
+            //socket.emit('sendTestReport', postJsonArr);
+          
+          });
+
+           function capitalizeFirstLetter(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+          }
+
+          document.addEventListener("backbutton", onBackKeyDown, false);
+          function onBackKeyDown() {
+            Storage.clear();
+            window.location.href="hold-for-technical.html";
+          }
+
+
+          function saveFile(fileName, fileData) {
+
+            document.addEventListener("deviceready", function() { 
+
+                      /*var deviceType = device.platform;
+                      if(deviceType === "Android"){
+                           var storageLocation = 'file:///storage/emulated/0/';
+                      }else{
+                           var storageLocation = cordova.file.documentsDirectory;
+                      }*/
+
+                  window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
+                    fileSystem.root.getFile(fileName, {create: true, exclusive: false}, function (entry) {
+                      var myFileUrl = entry.toURL()
+                      entry.createWriter(function (writer) {
+                        writer.onwriteend = function (evt) {
+                          showAlert("Successfully saved file to: " + myFileUrl, 'Success!');
+                        }
+                        writer.write(fileData)
+                      }, function (error) {
+                        showAlert("Error: Could not create file writer, " + error.code, 'Error!');
+                      })
+                    }, function (error) {
+                      showAlert("Error: Could not create file, " + error.code, 'Error!');
+                    })
+                  }, function (evt) {
+                    showAlert("Error: Could not access file system, " + evt.target.error.code, 'Error!');
+                  });
+
+
+
+
+            }, false);
+
+/*
+            var allowedOrigins = "http://192.168.0.246:3000";
+               var socket = io('http://192.168.0.246:3000',{
+                               origins: allowedOrigins // I think it should be written like this right? Otherwise there would be syntax error
+                           });
+               socket.on('news', function (data) {
+                   console.log(data);
+                   socket.emit('my other event', { my: 'data' });
+                 });
+          } */
+
+          function showAlert(message, title, callBack){
+            navigator.notification.alert(
+              message,
+              callBack,
+              title,
+              'Ok'
+              );
+          }         
+        </script>
+
+
+ 
+      </head>      
+      <body>
+       <div class="main-wapper" style="display : none;">
+         <div class="header-wapper" style="position: fixed !important; z-index: 99999; -webkit-backface-visibility: hidden; top: 0px; left: 0px;">
+           <div class="backng">
+             <div class="inr-hdr">
+               <div class="container">
+                <div class="inr-hdr-cnt">
+                 <p>Manual Test Result</p>	
+                 <!--span>&nbsp;</span-->
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div class="header-wapper" style="position: fixed !important; z-index: 99999 !important; margin-top: 40px; -webkit-backface-visibility: hidden; top: 0px; left: 0px;">
+         <div class="backng">
+           <div class="inr-hdr" style="background: rgb(255, 255, 255) none repeat scroll 0% 0%; color: rgb(0, 0, 0); padding-left: 10px; padding-right: 10px;">
+            <div class="inr-hdr-cnt" style="width: 100%; float: left;">
+             <span style="color: #000; width: 50%; float: left; font-size: 16px; font-weight: bold;">Test Name</span>
+             <span style="color: #000; width: 50%; float: left; text-align: right; font-size: 16px; font-weight: bold;">Test Result</span>
+           </div>             
+         </div>
+       </div>
+     </div>
+
+     <div class="section-wapper" style="margin-top: 74px;">
+      <div class="backng">        
+        <ul class="list-group"></ul>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

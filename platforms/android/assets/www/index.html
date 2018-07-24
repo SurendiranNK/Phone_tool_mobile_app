@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Home</title>
+
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Stylesheet -->
+    <link href="css/style.css" type="text/css" rel="stylesheet">
+    <link href="css/responsive.css" type="text/css" rel="stylesheet">
+    <link href="css/fonts.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="css/animate.min.css">
+    
+    <script type="text/javascript" src="cordova.js"></script>
+    <!--script type="text/javascript" src="js/cocoon.js"></script-->
+    <!--script type="text/javascript" src="js/server.js"></script-->
+    <script type="text/javascript" src="js/settings.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+          <script>
+              alert("SS");
+
+              var wsserver = cordova.plugins.wsserver;
+
+              wsserver.start(port, {
+                alert("port----"+port);
+                // WebSocket Server handlers
+                'onFailure' :  function(addr, port, reason) {
+                    console.log('Stopped listening on %s:%d. Reason: %s', addr, port, reason);
+                },
+                // WebSocket Connection handlers
+                'onOpen' : function(conn) {
+                    /* conn: {
+                     'uuid' : '8e176b14-a1af-70a7-3e3d-8b341977a16e',
+                     'remoteAddr' : '192.168.1.10',
+                     'httpFields' : {...},
+                     'resource' : '/?param1=value1&param2=value2'
+                     } */
+                    console.log('A user connected from %s', conn.remoteAddr);
+                },
+                'onMessage' : function(conn, msg) {
+                    console.log(conn, msg);
+                },
+                'onClose' : function(conn, code, reason, wasClean) {
+                    console.log('A user disconnected from %s', conn.remoteAddr);
+                },
+                // Other options
+                'origins' : [ 'file://' ], // validates the 'Origin' HTTP Header.
+                'protocols' : [ 'my-protocol-v1', 'my-protocol-v2' ], // validates the 'Sec-WebSocket-Protocol' HTTP Header.
+                'tcpNoDelay' : true // disables Nagle's algorithm.
+            }, function onStart(addr, port) {
+                console.log('Listening on %s:%d', addr, port);
+            }, function onDidNotStart(reason) {
+                console.log('Did not start. Reason: %s', reason);
+            });
+
+
+
+          </script>
+
+          <script type="text/javascript" charset="utf-8">
+
+            if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+                document.createTextNode(
+                  '@-ms-viewport{width:auto!important}'
+                  )
+                )
+             document.querySelector('head').appendChild(msViewportStyle)
+         }             
+
+         window.onload = function() {
+            Storage.clear();
+                //window.location.href="microphone.html";
+                
+                $(".main-wapper").fadeIn("slow");
+
+                setTimeout(function() {                
+                    $(".header-wapper").addClass("animated fadeOutUp");                
+                }, 2000);
+
+                setTimeout(function() {
+                    $(".section-wapper").addClass("animated fadeOutUp");                
+                    setTimeout(function() {
+                        $(".section-wapper").remove();
+                        $(".footer-wapper").attr("style", "margin-top: -30%;");
+
+                        waitingConnectionShow();
+
+                        setTimeout(function() {                            
+                            waitingConnectionShowUp();
+
+                            setTimeout(function() {
+                                awatingTestSuiteShow();
+
+                                setTimeout(function() {
+                                    awatingTestSuiteShowUp();
+
+                                }, 1000);
+
+                            }, 500);
+
+                        }, 1000);
+
+                    }, 500);
+                }, 2500);
+            }
+
+            $(document).ready(function(){
+
+                $(".automated").click(function(){
+                    $(".buttonPressValidation").html("automated");
+                    $(".manual").removeAttr("style");
+                    $(".automated").attr("style", "background: #d3d3d3; color: #000;");
+                    return false;
+                });
+
+                $(".manual").click(function(){
+                    $(".buttonPressValidation").html("manual");
+                    $(".automated").removeAttr("style");
+                    $(".manual").attr("style", "background: #d3d3d3; color: #000;");
+                    return false;
+                });
+
+                $(".manualTest").click(function(){
+                    window.location.href="hold-for-technical.html";
+                    return false;
+                });
+
+                $(".start").click(function(){
+                    if($(".buttonPressValidation").html() == ""){
+                        navigator.notification.alert(
+                          "Please choose your test method!",
+                          function(){},
+                          "Notice!",
+                          'Ok'
+                          );
+                        return false;
+                    }
+                    if($(".buttonPressValidation").html() == "manual"){
+                        window.location.href="hold-for-technical.html";
+                        return false;
+                    }               
+                    $(".chooseButton").hide();
+                    $(".startTestButton").hide();
+                    setTimeout(function() {
+                        runningAutoMatedTestShow();
+
+                        setTimeout(function() {
+                            wifiTestShow();
+
+                            setTimeout(function() {
+                                wifiTestShowUp();
+
+                                setTimeout(function() {
+                                    cellulerTestShow();
+
+                                    setTimeout(function() {
+                                        cellulerTestShowUp();
+
+                                        setTimeout(function() {
+                                            bluetoothTestShow();
+
+                                            setTimeout(function() {
+                                                bluetoothTestShowUp();
+
+                                                setTimeout(function() {
+                                                    GPSTestShow();
+
+                                                    setTimeout(function() {
+                                                        GPSTestShowUp();
+
+                                                        setTimeout(function() {
+                                                            jailBreakTestShow();
+
+                                                            setTimeout(function() {
+                                                                jailBreakTestShowUp();
+
+                                                                setTimeout(function() {
+                                                                    batteryTestShow();
+
+                                                                    setTimeout(function() {
+                                                                        batteryTestShowUp();
+
+                                                                        setTimeout(function() {
+                                                                            vibrationTestShow();
+
+                                                                            setTimeout(function() {
+                                                                                vibrationTestShowUp();
+
+                                                                                setTimeout(function() {
+                                                                                    cameraTestShow();
+
+                                                                                    setTimeout(function() {
+                                                                                        cameraTestShowUp();
+
+                                                                                        setTimeout(function() {
+                                                                                            microphoneTestShow();
+
+                                                                                            setTimeout(function() {
+                                                                                            microphoneTestShowUp();
+
+                                                                                            setTimeout(function() {
+                                                                                            startingTestShow();
+
+                                                                                            setTimeout(function() {
+                                                                                            startingTestShowUp();
+
+                                                                                            setTimeout(function() {
+                                                                                            startingmanualTestShow();
+
+                                                                                            setTimeout(function() {
+                                                                                            startingmanualTestShowUp();
+                                                                                            }, 3000);
+
+                                                                                            }, 500);
+
+                                                                                            }, 1000);
+
+                                                                                            }, 500);
+
+                                                                                        }, 1000);
+
+                                                                                        }, 500);
+
+                                                                                    }, 1000);
+
+                                                                                }, 500);
+
+                                                                            }, 1000);
+
+                                                                        }, 500);
+
+                                                                    }, 1000);
+
+                                                                }, 500);
+
+                                                            }, 1000);
+
+                                                        }, 500);
+
+}, 1000);
+
+}, 500);
+
+}, 1000);
+
+}, 500);
+
+}, 1000);
+
+}, 500);
+
+}, 1000);
+
+}, 500);
+
+}, 1000);
+
+});
+
+});
+
+function waitingConnectionShow(){
+    $(".waiting_connection").fadeIn("slow");
+    $(".waiting_connection").addClass("animated fadeInUp");
+}
+function waitingConnectionShowUp(){
+    $(".waiting_connection").addClass("animated fadeOutUp");
+}
+function awatingTestSuiteShow(){
+    $(".waiting_connection").remove();
+    $(".awating_test_suite").fadeIn("slow");
+    $(".awating_test_suite").addClass("animated fadeInUp");
+}
+function awatingTestSuiteShowUp(){
+    $(".awating_test_suite").addClass("animated fadeOutUp");
+    window.location.href="hold-for-technical.html";
+    //$(".chooseButton").fadeIn("slow");;
+    //$(".startTestButton").fadeIn("slow");;
+}
+function runningAutoMatedTestShow(){
+    $(".awating_test_suite").remove();
+    $(".running_automated_test").fadeIn("slow");
+    $(".running_automated_test").addClass("animated fadeInUp");
+}
+function wifiTestShow(){
+    $(".wifi_test").fadeIn("slow");
+    $(".wifi_test").addClass("animated fadeInUp");
+}
+function wifiTestShowUp(){
+    $(".wifi_test").addClass("animated fadeOutUp");
+}
+function cellulerTestShow(){
+    $(".wifi_test").remove();
+    $(".celluler_test").fadeIn("slow");
+    $(".celluler_test").addClass("animated fadeInUp");
+}
+function cellulerTestShowUp(){
+    $(".celluler_test").addClass("animated fadeOutUp");
+}
+function bluetoothTestShow(){
+    $(".celluler_test").remove();
+    $(".bluetooth_test").fadeIn("slow");
+    $(".bluetooth_test").addClass("animated fadeInUp");
+}
+function bluetoothTestShowUp(){
+    $(".bluetooth_test").addClass("animated fadeOutUp");
+}
+function GPSTestShow(){
+    $(".bluetooth_test").remove();
+    $(".gps_test").fadeIn("slow");
+    $(".gps_test").addClass("animated fadeInUp");
+}
+function GPSTestShowUp(){
+    $(".gps_test").addClass("animated fadeOutUp");
+}
+function jailBreakTestShow(){
+    $(".gps_test").remove();
+    $(".jail_break_test").fadeIn("slow");
+    $(".jail_break_test").addClass("animated fadeInUp");
+}
+function jailBreakTestShowUp(){
+    $(".jail_break_test").addClass("animated fadeOutUp");
+}
+function batteryTestShow(){
+    $(".jail_break_test").remove();
+    $(".battery_test").fadeIn("slow");
+    $(".battery_test").addClass("animated fadeInUp");
+}
+function batteryTestShowUp(){
+    $(".battery_test").addClass("animated fadeOutUp");
+}
+function vibrationTestShow(){
+    $(".battery_test").remove();
+    $(".vibration_test").fadeIn("slow");
+    $(".vibration_test").addClass("animated fadeInUp");
+}
+function vibrationTestShowUp(){
+    $(".vibration_test").addClass("animated fadeOutUp");
+}
+function cameraTestShow(){
+    $(".vibration_test").remove();
+    $(".camera_test").fadeIn("slow");
+    $(".camera_test").addClass("animated fadeInUp");
+}
+function cameraTestShowUp(){
+    $(".camera_test").addClass("animated fadeOutUp");
+}
+function microphoneTestShow(){
+    $(".camera_test").remove();
+    $(".microphone_test").fadeIn("slow");
+    $(".microphone_test").addClass("animated fadeInUp");
+}
+function microphoneTestShowUp(){
+    $(".microphone_test").addClass("animated fadeOutUp");
+}
+function startingTestShow(){
+    $(".microphone_test").remove();
+    $(".starting_test").fadeIn("slow");
+    $(".starting_test").addClass("animated fadeInUp");
+}
+function startingTestShowUp(){
+    $(".starting_test").addClass("animated fadeOutUp");
+}
+function startingmanualTestShow(){
+    $(".starting_test, .running_automated_test, .blank_div").remove();
+    $(".starting_manual_test").fadeIn("slow");
+    $(".starting_manual_test").addClass("animated fadeInUp");
+}
+function startingmanualTestShowUp(){    
+    $(".manualTest").fadeIn("slow");    
+    //window.location.href="hold-for-technical.html";    
+}
+
+document.addEventListener("backbutton", onBackKeyDown, false);
+function onBackKeyDown() {
+    window.location.href="index.html";
+}
+
+document.addEventListener('deviceready', function() {
+
+
+
+});
+
+</script>
+</head>
+
+<body class="inner-clr">
+    <div class="inner-body">
+        <div class="main-wapper" style="display: none;">
+            <div class="header-wapper">
+                <div class="backg">
+                    <div class="container">
+                        <div class="inr-hdr-cnt">
+                            <div class="logo">
+                                <img src="images/logo.png" alt="" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-wapper">
+                <div class="backg">
+                    <div class="container">
+                        <div class="inner-cnt">
+                            <div class="logo-txt">
+                                <img src="images/text.png" alt="" >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-wapper">
+                <div class="backg">
+                    <div class="container">
+                        <div class="ldr">
+                            <img src="images/loader.png" alt="" />
+                        </div>
+                        <div class="ldr waiting_connection" style="display: none;">
+                            Waiting for connection...
+                        </div>
+                        <div class="ldr awating_test_suite" style="display: none;">
+                            Awating test suite...
+                        </div>
+
+                        <div class="dsc chooseButton" style="display: none;">
+                            <div class="inr-dsc">
+                                <div class="inner-cnt">
+                                    <div class="inr-btn" style="margin: 0;">
+                                        <a class="tst automated" href="javascript:void(0);">automated test</a>
+                                        <a class="mnl manual" href="javascript:void(0);">manual test</a>
+                                    </div>                                        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="inmr-padn startTestButton" style="display: none; margin-top: 15px;">
+                            <div class="fr">
+                                <div class="iner-btn">
+                                    <a class="start" href="javascript:void(0);">Start</a>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="ldr running_automated_test" style="display: none;">
+                            Running Automated tests...
+                        </div>
+
+                        <div class="ldr blank_div"></div>
+
+                        <div class="ldr wifi_test" style="display: none;">
+                            Wifi
+                        </div>
+                        <div class="ldr celluler_test" style="display: none;">
+                            Cellular
+                        </div>
+                        <div class="ldr bluetooth_test" style="display: none;">
+                            Bluetooth
+                        </div>
+                        <div class="ldr gps_test" style="display: none;">
+                            GPS
+                        </div>
+                        <div class="ldr jail_break_test" style="display: none;">
+                            Jailbreak
+                        </div>
+                        <div class="ldr battery_test" style="display: none;">
+                            Battery Charge
+                        </div>
+                        <div class="ldr vibration_test" style="display: none;">
+                            Vibration + Accelerometer
+                        </div>
+                        <div class="ldr camera_test" style="display: none;">
+                            Camera + Flashlight
+                        </div>
+                        <div class="ldr microphone_test" style="display: none;">
+                            Microphone + Speaker
+                        </div>
+                        <!--div class="ldr starting_test" style="display: none;">
+                            Starting tests...
+                        </div-->
+                        <div class="ldr starting_test" style="display: none;">
+
+                        </div>
+                        <div class="ldr starting_manual_test" style="display: none;">
+                            Automated test completed...
+                        </div>
+                        <!--div class="ldr starting_manual_test" style="display: none;">
+                            Starting manual tests...
+                        </div-->
+
+                        <div class="dsc manualTest" style="display: none; margin-top: 30px;">
+                            <div class="inr-dsc">
+                                <div class="inner-cnt">
+                                    <div class="inr-btn" style="margin: 0;">
+                                        <a class="mnl manualTestButton" href="javascript:void(0);">start manual test</a>
+                                    </div>                                        
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>    
+    <span class="buttonPressValidation" style="display: none;"></span>
+</body>
+</html>
