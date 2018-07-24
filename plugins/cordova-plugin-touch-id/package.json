@@ -1,0 +1,63 @@
+{
+  "_from": "git+https://github.com/EddyVerbruggen/cordova-plugin-touch-id.git",
+  "_id": "cordova-plugin-touch-id@3.2.0",
+  "_inBundle": false,
+  "_integrity": "sha1-mBz2o2wNtUtp4J5aIjAOt1nE2p4=",
+  "_location": "/cordova-plugin-touch-id",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id",
+    "rawSpec": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id",
+    "saveSpec": "git+https://github.com/EddyVerbruggen/cordova-plugin-touch-id.git",
+    "fetchSpec": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id.git",
+    "gitCommittish": "master"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/EddyVerbruggen/cordova-plugin-touch-id.git#31e1650155d093d723080fd22fbbb87e86524c34",
+  "_spec": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id",
+  "_where": "/Users/macbook/Documents/pgProject/CocoonJS/Hardware_iOs",
+  "author": {
+    "name": "Eddy Verbruggen",
+    "email": "eddyverbruggen@gmail.com",
+    "url": "https://github.com/EddyVerbruggen"
+  },
+  "bugs": {
+    "url": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-touch-id",
+    "platforms": [
+      "ios"
+    ]
+  },
+  "deprecated": false,
+  "description": "Scan the fingerprint of your user with the TouchID sensor (iPhone 5S, iPhone 6(S), ..)",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id#readme",
+  "keywords": [
+    "TouchID",
+    "Touch ID",
+    "Fingerprint",
+    "Biometric",
+    "Scanner",
+    "ecosystem:cordova",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-touch-id",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EddyVerbruggen/cordova-plugin-touch-id.git"
+  },
+  "version": "3.2.0"
+}
