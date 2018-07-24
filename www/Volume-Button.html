@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Volume Buttons</title>
+
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="css/responsive.css" type="text/css" rel="stylesheet">
+  <link href="css/fonts.css" type="text/css" rel="stylesheet">
+  <link href="css/range.css" type="text/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/cocoon.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+  
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+          <script>
+           if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+              document.createTextNode(
+                '@-ms-viewport{width:auto!important}'
+                )
+              )
+             document.querySelector('head').appendChild(msViewportStyle)
+           }
+           setTimeout(function(){
+            $(".main-wapper").fadeIn("slow");
+            $(".header-wapper").addClass("animated slideInRight");
+            $(".section-wapper").addClass("animated slideInRight");
+                //$(".footer-wapper").addClass("animated slideInRight");
+              }, 300);
+
+           //Countdown timer         
+           var redirect = "Silent-Mode-Switch.html";
+           var isPaushed = false;
+           $(document).ready(function(){
+            var countdownElement = document.getElementById('countdown'),
+            seconds = 20,
+            second = 0,
+            interval, redirect = "Silent-Mode-Switch.html";
+
+
+            interval = setInterval(function() {
+              if(!isPaushed){
+                if((seconds - second) <= 1){
+                  countdownElement.firstChild.data = (seconds - second) + ' second';
+                } else {
+                  countdownElement.firstChild.data = (seconds - second) + ' seconds';
+                }
+                if (second >= seconds) {
+                  clearInterval(interval);
+                  Storage.setItem('volume_button', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                }
+                second++;
+              }
+            }, 1000);            
+
+            $(".pass").click(function(){
+              if (second >= seconds) {
+                Storage.setItem('volume_button', "timeout");
+                showAlert(timeOutMessage, 'Warning!', function(){
+                  window.location.href = redirect;  
+                });
+              } else {
+                if($(".volumeButtonTest").html() == ""){
+                  showAlert('Please press volume +/- button to test volume!', 'Warning!');
+                  return false;
+                } else {
+                  Storage.setItem('volume_button', "passed");
+                  window.location.href = redirect;
+                }
+              }
+              return false;
+            });
+
+            $(".fail").click(function(){
+              if (second >= seconds) {
+                Storage.setItem('volume_button', "timeout");
+                showAlert(timeOutMessage, 'Warning', function(){
+                  window.location.href = redirect;  
+                });
+              } else {
+                Storage.setItem('volume_button', "failed");
+                window.location.href = redirect;
+              }
+              return false;
+            });
+
+          });
+           function showAlert(message, title, callBack){
+            navigator.notification.alert(
+              message,
+              callBack,
+              title,
+              'Ok'
+              );
+          }
+          /*document.addEventListener("backbutton", onBackKeyDown, false);
+          function onBackKeyDown() {
+            window.location.href="home-button.html";
+          }*/
+
+          document.addEventListener("pause", function(e){
+            e.preventDefault();
+            isPaushed = true;              
+          }, false);
+
+          document.addEventListener("resume", function(e){
+            e.preventDefault();
+            isPaushed = false;
+          }, false);
+        </script>
+      </head>
+
+      <body>
+       <div class="main-wapper" style="display: none;">
+         <div class="header-wapper">
+           <div class="backng">
+             <div class="inr-hdr">
+               <div class="container">
+                <div class="inr-hdr-cnt">
+                 <p>Volume Buttons</p>	
+                 <span>Adjust the volume with the volume buttons on the phone</span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div class="section-wapper">
+         <div class="backng">
+           <div class="container">
+             <div class="inner-cnt">
+               <div class="inr-sec-cnt">
+                 <p id="countdown">20 seconds</p>
+               </div>
+
+               <div class="inr-sec-backg">
+                <div class="vlm">
+                 <p>&nbsp;</p>	
+               </div>
+               <div class="bck-usr-btm-vlm">
+                <p>
+                 <!--<input type="text">-->
+                 <div id="slider-range-max"></div>
+               </p>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+
+   <div class="footer-wapper">
+     <div class="backng">
+       <div class="container">
+         <div class="inmr-padn">
+          <div class="inr-ftr-btn">
+            <a class="rd fail" href="javascript:void(0);">fail</a>
+            <a class="clr pass" href="javascript:void(0);">pass</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/jquery-ui.min.js"></script>
+<script src="js/jquery.ui.touch-punch.min.js"></script>
+
+<script>
+  document.addEventListener("deviceready", onDeviceReady, false);
+  function onDeviceReady() {
+    //window.addEventListener("volumebuttonslistener", onVolumeButtonsListener, false);
+    document.addEventListener("volumeupbutton", onVolumeUpKeyUp, false);
+    document.addEventListener("volumedownbutton", onVolumeUpKeyDown, false);
+
+    function onVolumeUpKeyUp() {
+      getVolumeC("volume-up");
+      $(".volumeButtonTest").html("pass");        
+    }
+
+    function onVolumeUpKeyDown() {
+      getVolumeC("volume-down");
+      $(".volumeButtonTest").html("pass");        
+    }
+
+    window.volume = cordova.plugins.VolumeControl;
+  }
+  function setVolumeC(vol){
+    volume.setVolume(vol, onVolSuccess, onVolError);
+  }
+  function getVolumeC(type){
+    volume.getVolume(function(vol){
+      var setVolumeVal;
+      if(type == "volume-up"){
+        if(parseInt(vol) == 100){
+          setVolumeVal = 100;
+        } else {
+          setVolumeVal = parseInt(vol)+10;
+        }
+        $("#slider-range-max").slider( "option", "value", setVolumeVal);
+        setVolumeC(parseInt(setVolumeVal));
+      }
+      if(type == "volume-down"){
+        setVolumeVal = parseInt(vol)-10;
+        $("#slider-range-max").slider( "option", "value", setVolumeVal);
+        setVolumeC(parseInt(setVolumeVal));
+      }
+    }, onVolError);   
+  }    
+  function getVolError(){        
+  }
+  function onVolSuccess(){        
+  }
+  function onVolError(err) {        
+  }    
+
+  /*function onVolumeButtonsListener(info){
+    getVolumeC(info.signal);
+    $(".volumeButtonTest").html("pass");        
+  }*/
+
+  $( function() {
+    $("#slider-range-max").slider({
+      range: "max",
+      min: 1,
+      max: 100,
+      step: 10,
+      //disabled: true,
+      slide: function( event, ui ) {
+        $("#amount").val( ui.value );
+        setVolumeC(ui.value);
+      }
+    });
+
+  });
+</script>
+<span class="volumeButtonTest" style="display: none;"></span>
+</body>
+</html>

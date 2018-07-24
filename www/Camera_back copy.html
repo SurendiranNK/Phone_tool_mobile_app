@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Camera (back)</title>
+
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="css/responsive.css" type="text/css" rel="stylesheet">
+  <link href="css/fonts.css" type="text/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/cocoon.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+          <script>
+           if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+              document.createTextNode(
+                '@-ms-viewport{width:auto!important}'
+                )
+              )
+             document.querySelector('head').appendChild(msViewportStyle)
+           }
+           setTimeout(function(){
+            $("body").fadeIn("slow");
+            $(".main-wapper").fadeIn("slow");
+            $(".header-wapper").addClass("animated slideInRight");
+            $(".section-wapper").addClass("animated slideInRight");                
+          }, 300);
+            //Countdown timer          
+            var redirect = "microphone.html";
+            var isPaushed = false;
+            $(document).ready(function(){
+
+
+              var countdownElement = document.getElementById('countdown'),
+              seconds = 20,
+              second = 0,              
+              interval, redirect = "microphone.html";
+
+              interval = setInterval(function() {
+                if(!isPaushed){
+                  if((seconds - second) <= 1){
+                    countdownElement.firstChild.data = (seconds - second) + ' second';
+                  } else {
+                    countdownElement.firstChild.data = (seconds - second) + ' seconds';
+                  }
+                  if (second >= seconds) {
+                    clearInterval(interval);
+                    Storage.setItem('Camera_back', "timeout");
+                    CameraPreview.hide();
+                    showAlert(timeOutMessage, 'Warning!', function(){
+                      window.location.href = redirect;  
+                    });
+                  }
+                  second++;
+                }
+              }, 1000);            
+
+              $(".pass").click(function(){
+                CameraPreview.hide();
+                if (second >= seconds) {
+                  Storage.setItem('Camera_back', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                } else {                
+                  Storage.setItem('Camera_back', "passed");                  
+                  window.location.href = redirect;                    
+                }
+                return false;
+              });
+
+              $(".fail").click(function(){
+                CameraPreview.hide();
+                if (second >= seconds) {
+                  Storage.setItem('Camera_back', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                } else {
+                  Storage.setItem('Camera_back', "failed");
+                  window.location.href = redirect;                  
+                }
+                return false;
+              });
+
+              /*$(".start").click(function(){
+                $("#startCamButton").remove();
+                $("#takePic").show();
+                var options = {
+                  x: 0,
+                  y: 0,
+                  width: window.screen.width,
+                  height: 500,
+                  camera: CameraPreview.CAMERA_DIRECTION.BACK,
+                  toBack: false,                    
+                  tapPhoto: true,
+                  tapFocus: true,
+                  previewDrag: false
+                };
+
+                CameraPreview.startCamera(options);
+              });*/
+
+              $("#takePic").click(function(e){
+                CameraPreview.hide();
+                CameraPreview.takePicture({width:640, height:640, quality: 85}, function(base64PictureData){                    
+                  var imageSrcData = 'data:image/jpeg;base64,' +base64PictureData;
+                  $('.crs').attr('style', 'background-image:url('+imageSrcData+') !important;');
+                  $(".rp").hide();
+                  $("#takePic").hide();
+                  e.preventDefault();
+                  isPaushed = false;
+                });
+              });
+
+            });
+            
+            function showAlert(message, title, callBack){
+              navigator.notification.alert(
+                message,
+                callBack,
+                title,
+                'Ok'
+                );
+            }
+
+            document.addEventListener("deviceready", function(e){
+              e.preventDefault();
+              isPaushed = true;
+              cordova.plugins.barcodeScanner.scan(
+                function (result) {
+                      /*alert("We got a barcode\n" +
+                            "Result: " + result.text + "\n" +
+                            "Format: " + result.format + "\n" +
+                            "Cancelled: " + result.cancelled);*/
+                            //alert(JSON.stringify(result));
+                            //showAlert("Scanning compete", "Success!");
+                            //$("#startCamButton").show(); 
+                            $('.crs').attr('style', 'background-image: none !important;');                       
+                            $(".rp").html("<p><strong>QR Code Result</strong></p>");
+                            $(".rp").html("<p>Result: " + result.text+"</p>");
+                            $(".rp").append("<p>Format: " + result.format+"</p>");                            
+                            $(".rp").attr("style", "margin-top: 70px;");
+                            
+                            e.preventDefault();
+                            isPaushed = false;
+                            setTimeout(function(){                              
+                              var options = {
+                                x: 0,
+                                y: 0,
+                                width: window.screen.width,
+                                height: 300,
+                                camera: CameraPreview.CAMERA_DIRECTION.BACK,
+                                toBack: false,                    
+                                tapPhoto: false,
+                                tapFocus: false,
+                                previewDrag: false
+                              };
+
+                              CameraPreview.startCamera(options);                                                            
+                              $("#startCamButton").remove();
+                              $("#takePic").show();
+                              e.preventDefault();
+                              isPaushed = true;
+                            }, 1000);
+                            
+
+                          },
+                          function (error) {
+                            showAlert("Scanning failed: " + error, "Error!");
+                          },
+                          {
+                      preferFrontCamera : false, // iOS and Android
+                      showFlipCameraButton : false, // iOS and Android
+                      showTorchButton : true, // iOS and Android
+                      torchOn: false, // Android, launch with the torch switched on (if available)
+                      saveHistory: false, // Android, save scan history (default false)
+                      prompt : "Place a qrcode inside the scan area", // Android
+                      resultDisplayDuration: 500, // Android, display scanned text for X ms. 0 suppresses it entirely, default 1500
+                      formats : "QR_CODE,PDF_417", // default: all but PDF_417 and RSS_EXPANDED
+                      orientation : "portrait", // Android only (portrait|landscape), default unset so it rotates with the device
+                      disableAnimations : true, // iOS
+                      disableSuccessBeep: true // iOS
+                    }
+                    );
+
+            }, false);
+            document.addEventListener("backbutton", onBackKeyDown, false);
+            function onBackKeyDown() {
+              //window.location.href="Camera_front.html";
+              CameraPreview.hide();
+            }
+
+            document.addEventListener("pause", function(e){
+              e.preventDefault();
+              isPaushed = true;              
+            }, false);
+
+            document.addEventListener("resume", function(e){
+              e.preventDefault();
+              isPaushed = false;
+            }, false);       
+          </script>
+        </head>
+
+        <body class="crs" style="display : none;">
+         <div class="main-wapper" style="display : none;">
+           <div class="header-wapper">
+             <div class="backng">
+               <div class="inr-hdr">
+                 <div class="container">
+                  <div class="inr-hdr-cnt">
+                   <p>Camera(back)</p>  
+                   <span>Below is a view from the rear-facing camera</span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <div class="section-wapper">
+           <div class="backng">
+             <div class="container">
+               <div class="inner-cnt">
+                 <div class="inr-sec-cnt">
+                   <p id="countdown">20 seconds</p>
+                 </div>
+
+                 <div class="inr-sec-backg">
+                   <div class="cmr-bck">
+                     <div class="rp">
+                       <p>Placeholder for a live view <br/>
+                        from the rear-facing camera</p>
+                      </div>
+                      <div class="bck-usr-btm" id="startCamButton" style="display: none;">
+                       <a class="clr start" href="javascript:void(0);">Start Back Camera</a>
+                     </div>
+                     <div class="bck-usr-btm" id="takePic" >
+                       <a class="clr" style="margin:0;" href="javascript:void(0);">Take Picture</a>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <div class="footer-wapper">
+           <div class="backng">
+             <div class="container">
+               <div class="inmr-padn">
+                <div class="inr-ftr-btn">
+                  <a class="rd fail" href="javascript:void(0);">fail</a>
+                  <a class="clr pass" href="javascript:void(0);">pass</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </body>
+    </html>

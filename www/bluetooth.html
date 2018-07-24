@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Bluetooth</title>
+
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="css/responsive.css" type="text/css" rel="stylesheet">
+  <link href="css/fonts.css" type="text/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+          <script>
+           if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+              document.createTextNode(
+                '@-ms-viewport{width:auto!important}'
+                )
+              )
+             document.querySelector('head').appendChild(msViewportStyle)
+           }
+
+           var redirect = "results.html";
+           var isPaushed = false;
+           var checkBluetooth;
+           $(document).ready(function(){
+            setTimeout(function(){
+              $("body").fadeIn("slow");
+              $(".main-wapper").fadeIn("slow");
+              $(".header-wapper").addClass("animated slideInRight");
+              $(".section-wapper").addClass("animated slideInRight");                
+            }, 300);
+
+            var countdownElement = document.getElementById('countdown'),
+            seconds = 20,
+            second = 0,              
+            interval, redirect = "results.html";
+
+            interval = setInterval(function() {
+              if(!isPaushed){
+                if((seconds - second) <= 1){
+                  countdownElement.firstChild.data = (seconds - second) + ' second';
+                } else {
+                  countdownElement.firstChild.data = (seconds - second) + ' seconds';
+                }
+                if (second >= seconds) {
+                  clearInterval(interval);
+                  Storage.setItem('bluetooth', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                }
+                second++;
+              }
+            }, 1000);            
+
+            $(".pass").click(function(){
+              if (second >= seconds) {
+                Storage.setItem('bluetooth', "timeout");
+                showAlert(timeOutMessage, 'Warning!', function(){                    
+                  window.location.href = redirect;  
+                });
+              } else {
+                Storage.setItem('bluetooth', "passed");
+                window.location.href = redirect;                    
+              }
+              return false;
+            });
+
+            $(".fail").click(function(){
+              if (second >= seconds) {
+                Storage.setItem('bluetooth', "timeout");
+                showAlert(timeOutMessage, 'Warning!', function(){                    
+                  window.location.href = redirect;  
+                });
+              } else {                
+                Storage.setItem('bluetooth', "failed");
+                window.location.href = redirect;                  
+              }
+              return false;
+            }); 
+
+            $(document).on('click', '.list-group-item-click', function(){
+              var id = $(this).attr("id");
+              var name = $(this).attr("name");              
+              connectToDevice(id, name);
+            });
+
+            var timeO = setInterval(function(){
+              if(checkBluetooth == false){
+                bluetoothSerial.isEnabled(success, function(){});
+              } else {
+                clearInterval(timeO);
+              }
+            },2000);
+
+          });
+
+           function showAlert(message, title, callBack){
+            navigator.notification.alert(
+              message,
+              callBack,
+              title,
+              'Ok'
+              );
+          }
+
+
+          document.addEventListener("deviceready", function(){
+            setTimeout(function(){              
+              bluetoothSerial.isEnabled(success, function(){
+                checkBluetooth = false;
+                showAlert('Please enable bluetooth', "Error!");
+              });
+            },1000);
+          }, false); 
+
+          function success(){
+            bluetoothSerial.list(
+              function(bList){
+                checkBluetooth = true;                
+                if(bList.length > 0){
+                  $('.inr-sec-backg').hide();
+                  $('.list-group').show();
+                  $('.list-group').html('');
+                  $(bList).each(function(k,v){
+                    var li = '<li class="list-group-item list-group-item-click" id="'+v.address+'" name="'+v.name+'">';
+                    li += '<img src="images/bluetooth-ico.png" style="width: 30px; margin-right: 5px;">';
+                    li += v.name;
+                    li += '</li>';
+                    $(".list-group").append(li);                  
+                  });
+                }
+                //refreshList();
+              }, failure);
+            bluetoothSerial.subscribeRawData(function (data) {
+              showAlert("Data received successfully!", "Success", function(){
+                Storage.setItem('bluetooth', "passed");                        
+              });
+            }, failure);
+          }
+
+          /*function refreshList(){
+            if(checkBluetooth == true){
+              setInterval(function(){
+                bluetoothSerial.list(function(bList){                  
+                  $('.inr-sec-backg').hide();
+                  $('.list-group').show();
+                  $('.list-group').html('');
+                  $(bList).each(function(k,v){
+                    var li = '<li class="list-group-item" id="'+v.address+'">';
+                    li += '<img src="images/bluetooth-ico.png" style="width: 30px; margin-right: 5px;">';
+                    li += v.name;
+                    li += '</li>';
+                    $(".list-group").append(li);            
+                  });
+                }, failure);
+              },2000);
+            }
+          }*/
+
+          function failure(fail){
+            showAlert("Failure: "+fail, "Error!");
+          }
+
+          function connectToDevice(id, name){
+            showToast("Connecting...");
+            bluetoothSerial.isConnected(
+              function() {
+
+                showAlert("Device "+name+" connected successfully", "Success!", function(){
+                  bluetoothSerial.subscribeRawData(function (data) {                    
+                    showAlert("Data received successfully!", "Success", function(){
+                      Storage.setItem('bluetooth', "passed");                      
+                    });
+                  }, failure);  
+
+                  var data = new Uint8Array(4);
+                  data[0] = 0x41;
+                  data[1] = 0x42;
+                  data[2] = 0x43;
+                  data[3] = 0x44;
+                  bluetoothSerial.write(data, function(){
+                    showAlert("Data shared successfully!", "Success", function(){
+                      Storage.setItem('bluetooth', "passed");                      
+                    });  
+                  }, failure);
+
+                });
+
+              },
+              function() {
+
+                bluetoothSerial.connect(id, function(){ 
+                  showAlert("Device "+name+" connected successfully", "Success!", function(){
+                    bluetoothSerial.subscribeRawData(function (data) {
+                      showAlert("Data received successfully!", "Success", function(){
+                        Storage.setItem('bluetooth', "passed");                        
+                      });
+                    }, failure);
+
+                    var data = new Uint8Array(4);
+                    data[0] = 0x41;
+                    data[1] = 0x42;
+                    data[2] = 0x43;
+                    data[3] = 0x44;
+                    bluetoothSerial.write(data, function(){
+                      showAlert("Data shared successfully!", "Success", function(){
+                        Storage.setItem('bluetooth', "passed");                      
+                      });  
+                    }, failure);
+
+                  });              
+                }, function(){
+                  showAlert("Failed to connect "+name, "Error!", function(){
+                    Storage.setItem('bluetooth', "failed");                    
+                  });
+                });
+
+              });
+          }          
+
+          /*document.addEventListener("backbutton", onBackKeyDown, false);
+          function onBackKeyDown() {
+            window.location.href="activation-lock.html";
+          }*/
+
+          document.addEventListener("pause", function(e){
+            e.preventDefault();
+            isPaushed = true;              
+          }, false);
+
+          document.addEventListener("resume", function(e){
+            e.preventDefault();
+            isPaushed = false;
+          }, false);
+
+          function showToast(messageVal) {
+            window.plugins.toast.showWithOptions(
+            {
+              message: messageVal,
+              duration: 2000,
+              position: "bottom",
+              addPixelsY: -40
+            },function(){}, function(){});
+          }
+
+          function hideToast() {
+            window.plugins.toast.hide();
+          }
+        </script>
+      </head>
+
+      <body>
+       <div class="main-wapper" style="display: none;">
+         <div class="header-wapper">
+           <div class="backng">
+             <div class="inr-hdr">
+               <div class="container">
+                <div class="inr-hdr-cnt">
+                 <p>Bluetooth</p> 
+                 <span>Share data over bluetooth</span>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div class="section-wapper">
+         <div class="backng">
+           <div class="container">
+             <div class="inner-cnt">
+               <div class="inr-sec-cnt">
+                 <p id="countdown">20 seconds</p>
+               </div>
+
+               <div class="inr-sec-backg">
+                 <div class="bck-bluetooth">
+                   <p>&nbsp;</p>  
+                 </div>                 
+               </div>
+
+               <ul class="list-group" style="text-align: left; font-size: 16px;">
+                <li class="list-group-item">No device found</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-wapper">
+       <div class="backng">
+         <div class="container">
+           <div class="inmr-padn">
+            <div class="inr-ftr-btn">
+              <a class="rd fail" href="javascript:void(0);">fail</a>
+              <a class="clr pass" href="javascript:void(0);">pass</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
