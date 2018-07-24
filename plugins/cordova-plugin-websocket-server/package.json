@@ -1,0 +1,101 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-websocket-server",
+        "scope": null,
+        "escapedName": "cordova-plugin-websocket-server",
+        "name": "cordova-plugin-websocket-server",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "/home/android-04/Desktop/PhoneTool"
+    ]
+  ],
+  "_from": "cordova-plugin-websocket-server@latest",
+  "_id": "cordova-plugin-websocket-server@1.4.10",
+  "_inCache": true,
+  "_location": "/cordova-plugin-websocket-server",
+  "_nodeVersion": "8.10.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-websocket-server_1.4.10_1522854138235_0.9459652062221524"
+  },
+  "_npmUser": {
+    "name": "becvert",
+    "email": "support@becvertprod.fr"
+  },
+  "_npmVersion": "5.7.1",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-websocket-server",
+    "scope": null,
+    "escapedName": "cordova-plugin-websocket-server",
+    "name": "cordova-plugin-websocket-server",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.4.10.tgz",
+  "_shasum": "ff934c218f25ee8cce88f058093260e63eb8b59e",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-websocket-server",
+  "_where": "/home/android-04/Desktop/PhoneTool",
+  "author": {
+    "name": "Sylvain Bréjeon",
+    "url": "https://github.com/becvert"
+  },
+  "bugs": {
+    "url": "https://github.com/becvert/cordova-plugin-websocket-server/issues"
+  },
+  "cordova": {
+    "id": "cordova-plugin-websocket-server",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova WebSocket Server Plugin",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "integrity": "sha512-AJJ+kclul9qWlQFWFdPg61lsYrUdUjnJOpMcMcaB7k7cRjbn4OnsVf1tvBvs57KlEHo7bIKycLcJ/Scl3HaQkg==",
+    "shasum": "ff934c218f25ee8cce88f058093260e63eb8b59e",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-websocket-server/-/cordova-plugin-websocket-server-1.4.10.tgz",
+    "fileCount": 16,
+    "unpackedSize": 4272771
+  },
+  "gitHead": "4f28f2c8397df5bcdb1a89dcef18c235c80ff9d2",
+  "homepage": "https://github.com/becvert/cordova-plugin-websocket-server",
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova",
+    "plugin",
+    "network",
+    "websocket",
+    "server"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "becvert",
+      "email": "support@becvertprod.com"
+    }
+  ],
+  "name": "cordova-plugin-websocket-server",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/becvert/cordova-plugin-websocket-server.git"
+  },
+  "version": "1.4.10"
+}
