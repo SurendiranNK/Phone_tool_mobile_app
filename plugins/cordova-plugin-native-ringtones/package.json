@@ -1,0 +1,59 @@
+{
+  "_from": "git+https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+  "_id": "cordova-plugin-native-ringtones@0.2.5",
+  "_inBundle": false,
+  "_integrity": "sha1-7OOyQim58ZA4DrK9evCIl0oB43U=",
+  "_location": "/cordova-plugin-native-ringtones",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+    "rawSpec": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+    "saveSpec": "git+https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+    "fetchSpec": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+    "gitCommittish": "master"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git#182dd599967883f6e4e5411522fdf2e58e53b661",
+  "_spec": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+  "_where": "/Users/macbook/Documents/pgProject/CocoonJS/Hardware_iOs",
+  "author": {
+    "name": "Tong Zhang"
+  },
+  "bugs": {
+    "url": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-native-ringtones",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {
+    "cordova-plugin-media": "*"
+  },
+  "deprecated": false,
+  "description": "Get and play the native ringtone list on Android/IOS devices.",
+  "homepage": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones#readme",
+  "keywords": [
+    "cordova",
+    "system sound",
+    "native ringtones",
+    "ringtone list",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "Apache 2.0",
+  "name": "cordova-plugin-native-ringtones",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git"
+  },
+  "version": "0.2.5"
+}
