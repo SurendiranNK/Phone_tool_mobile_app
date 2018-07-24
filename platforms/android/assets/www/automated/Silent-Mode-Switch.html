@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Silent Mode Switch</title>
+
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="css/responsive.css" type="text/css" rel="stylesheet">
+  <link href="css/fonts.css" type="text/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/cocoon.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+  <style type="text/css">
+    .slnt{
+      margin: 0;
+    }
+  </style>
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+          <script>
+           if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+              document.createTextNode(
+                '@-ms-viewport{width:auto!important}'
+                )
+              )
+             document.querySelector('head').appendChild(msViewportStyle)
+           }
+           setTimeout(function(){
+            $(".main-wapper").fadeIn("slow");
+            $(".header-wapper").addClass("animated slideInRight");
+            $(".section-wapper").addClass("animated slideInRight");
+                //$(".footer-wapper").addClass("animated slideInRight");
+              }, 300);
+            //Countdown timer            
+            var redirect = "Vibration.html";
+            var isPaushed = false;
+            $(document).ready(function(){
+              var countdownElement = document.getElementById('countdown'),
+              seconds = 20,
+              second = 0,
+              interval, redirect = "Vibration.html";
+
+              interval = setInterval(function() {
+                if(!isPaushed){
+                  if((seconds - second) <= 1){
+                    countdownElement.firstChild.data = (seconds - second) + ' second';
+                  } else {
+                    countdownElement.firstChild.data = (seconds - second) + ' seconds';
+                  }
+                  if (second >= seconds) {
+                    clearInterval(interval);
+                    Storage.setItem('silent_mode', "timeout");
+                    showAlert(timeOutMessage, 'Warning!', function(){
+                      window.location.href = redirect;  
+                    });
+                  }
+                  second++;
+                }
+              }, 1000);            
+
+              $(".pass").click(function(){
+                if (second >= seconds) {
+                  Storage.setItem('silent_mode', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                } else {
+                  if($(".silentModeTest").html() == ""){
+                    showAlert('Please press volume icon to test silent mode!', 'Warning!');
+                    return false;
+                  } else {
+                    Storage.setItem('silent_mode', "passed");
+                    window.location.href = redirect;
+                  }
+                }
+                return false;
+              });
+
+              $(".fail").click(function(){
+                if (second >= seconds) {
+                  Storage.setItem('silent_mode', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                } else {
+                  Storage.setItem('silent_mode', "failed");
+                  window.location.href = redirect;                
+                }
+                return false;
+              });
+
+              $(".volumeClass").click(function(){
+                if($(this).hasClass('vlm')){
+                  audio_mode.change_audio_mode("silent", successModeSetSilent, failureModeSetSilent); 
+                  //instead of 'vibrate' other values are 'normal' or 'silent'
+                } else if($(this).hasClass('slnt')){
+                  audio_mode.change_audio_mode("normal", successModeSetNormal, failureModeSetNormal);
+                }
+              });
+
+            });
+
+            function showAlert(message, title, callBack){
+              navigator.notification.alert(
+                message,
+                callBack,
+                title,
+                'Ok'
+                );
+            }
+
+            function successModeSetSilent(){
+              $(".silentModeTest").html("pass");
+              $(".volumeClass").removeClass("vlm");
+              $(".volumeClass").addClass("slnt");
+            }
+            function failureModeSetSilent(){
+              showAlert("Silent mode has no effect if the device implements a fixed volume policy. Changing mode to vibrate now.", "Error!", function(){
+                audio_mode.change_audio_mode("vibrate", successModeSetSilent, failureModeSetSilent);
+              });            
+            }
+
+            function successModeSetNormal(){
+              $(".silentModeTest").html("pass");
+              $(".volumeClass").removeClass("slnt");
+              $(".volumeClass").addClass("vlm");
+            }
+            function failureModeSetNormal(){
+              showAlert("Failed to set normal mode.", "Error!");
+            }
+            
+            document.addEventListener("deviceready", onDeviceReady, false);
+            function onDeviceReady() {
+              plugins.ringerMode.getRingerMode(function(ringerMode) {
+                if(ringerMode == "RINGER_MODE_SILENT" || ringerMode == "RINGER_MODE_VIBRATE"){
+                  $(".volumeClass").removeClass("vlm");
+                  $(".volumeClass").addClass("slnt");
+                } else if(ringerMode == "RINGER_MODE_NORMAL"){
+                  $(".volumeClass").removeClass("slnt");
+                  $(".volumeClass").addClass("vlm");
+                }
+              });            
+            }
+
+            /*document.addEventListener("backbutton", onBackKeyDown, false);
+            function onBackKeyDown() {
+              window.location.href="Volume-Button.html";
+            }*/
+
+            document.addEventListener("pause", function(e){
+              e.preventDefault();
+              isPaushed = true;              
+            }, false);
+
+            document.addEventListener("resume", function(e){
+              e.preventDefault();
+              isPaushed = false;
+            }, false);
+
+          </script>
+        </head>
+
+        <body>
+         <div class="main-wapper" style="display: none;">
+           <div class="header-wapper">
+             <div class="backng">
+               <div class="inr-hdr">
+                 <div class="container">
+                  <div class="inr-hdr-cnt">
+                   <p>Silent Mode Switch</p>	
+                   <span>Switch the silent mode switch from on to off</span>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+         <div class="section-wapper">
+           <div class="backng">
+             <div class="container">
+               <div class="inner-cnt">
+                 <div class="inr-sec-cnt">
+                   <p id="countdown">20 seconds</p>
+                 </div>
+
+                 <div class="inr-sec-backg">
+                  <div class="slnt volumeClass">
+                   <p>&nbsp;</p>	
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <div class="footer-wapper">
+         <div class="backng">
+           <div class="container">
+             <div class="inmr-padn">
+              <div class="inr-ftr-btn">
+                <a class="rd fail" href="javascript:void(0);">fail</a>
+                <a class="clr pass" href="javascript:void(0);">pass</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="silentModeTest" style="display: none;"></span>
+  </body>
+  </html>

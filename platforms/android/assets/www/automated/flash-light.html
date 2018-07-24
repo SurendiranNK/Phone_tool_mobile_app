@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Flashlight</title>
+
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link href="css/style.css" type="text/css" rel="stylesheet">
+  <link href="css/responsive.css" type="text/css" rel="stylesheet">
+  <link href="css/fonts.css" type="text/css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/animate.min.css">
+
+  <script type="text/javascript" src="cordova.js"></script>
+  <script type="text/javascript" src="js/cocoon.js"></script>
+  <script type="text/javascript" src="js/settings.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="js/jquery.min.js"></script>
+  <!-- Include all compiled plugins (below), or include individual files as needed -->
+  <script src="js/bootstrap.min.js"></script>
+
+  <style type="text/css">
+    .flash-off {
+      background: rgba(0, 0, 0, 0) url("images/flash.png") no-repeat scroll center center;
+      display: inline-block;
+      padding: 95px 0 99px;
+      width: 213px;
+    }
+
+    .flash-on {
+      background: rgba(0, 0, 0, 0) url("images/flash-on.png") no-repeat scroll center center;
+      display: inline-block;
+      padding: 95px 0 99px;
+      width: 213px;
+    }
+  </style>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+          <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+          <![endif]-->
+
+          <script>
+           if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
+             var msViewportStyle = document.createElement('style')
+             msViewportStyle.appendChild(
+              document.createTextNode(
+                '@-ms-viewport{width:auto!important}'
+                )
+              )
+             document.querySelector('head').appendChild(msViewportStyle)
+           }
+           setTimeout(function(){
+            $(".main-wapper").fadeIn("slow");
+            $(".header-wapper").addClass("animated slideInRight");
+            $(".section-wapper").addClass("animated slideInRight");                
+          }, 300);
+
+           //Countdown timer           
+           var redirect = "Camera_front.html";
+           var isPaushed = false;
+           $(document).ready(function(){
+            var countdownElement = document.getElementById('countdown'),
+            seconds = 20,
+            second = 0,
+            interval, redirect = "Camera_front.html";
+
+            interval = setInterval(function() {
+              if(!isPaushed) {
+                if((seconds - second) <= 1){
+                  countdownElement.firstChild.data = (seconds - second) + ' second';
+                } else {
+                  countdownElement.firstChild.data = (seconds - second) + ' seconds';
+                }
+                if (second >= seconds) {
+                  clearInterval(interval);
+                  Storage.setItem('flash_light', "timeout");
+                  showAlert(timeOutMessage, 'Warning!', function(){
+                    window.location.href = redirect;  
+                  });
+                }
+                second++;
+              }
+            }, 1000);            
+
+            $(".pass").click(function(){
+              if (second >= seconds) {
+                Storage.setItem('flash_light', "timeout");
+                showAlert(timeOutMessage, 'Warning!', function(){
+                  window.location.href = redirect;  
+                });
+              } else {                
+                Storage.setItem('flash_light', "passed");
+                window.location.href = redirect;                
+              }
+              return false;
+            });
+
+            $(".fail").click(function(){
+              if (second >= seconds) {
+                Storage.setItem('flash_light', "timeout");
+                showAlert(timeOutMessage, 'Warning!', function(){
+                  window.location.href = redirect;  
+                });
+              } else {                
+                Storage.setItem('flash_light', "failed");
+                window.location.href = redirect;                
+              }
+              return false;
+            });
+
+            $('input[type="checkbox"]').on('click', function() {
+              if($(this).val() == "off"){
+                $(this).val("on");
+                offFlash();
+              } else if($(this).val() == "on"){
+                $(this).val("off");
+                onFlash();
+              }                    
+            });
+
+          });
+           function showAlert(message, title, callBack){
+            navigator.notification.alert(
+              message,
+              callBack,
+              title,
+              'Ok'
+              );
+          } 
+
+        /*document.addEventListener("deviceready", onDeviceReady, false);
+        
+        function onDeviceReady() {
+
+            window.plugins.flashlight.available(function(isAvailable) {
+              if (isAvailable) {
+
+                window.plugins.flashlight.toggle(
+                  function() {},
+                  function() {},
+                  {intensity: 0.3}
+                  );
+
+                setTimeout(function() {
+                  //window.plugins.flashlight.switchOff();
+              }, 3000);
+
+            } else {
+                showAlert("Flashlight not available on this device", "Error!");
+            }
+        });
+
+      }*/
+
+      function onFlash() {
+        window.plugins.flashlight.available(function(isAvailable) {
+          if (isAvailable) {
+
+            window.plugins.flashlight.toggle(
+              function() {
+                $(".flashUpdate").removeClass('flash-off');
+                $(".flashUpdate").addClass('flash-on');
+              },
+              function() {},
+              {intensity: 0.3}
+              );            
+
+            setTimeout(function() {
+                  //window.plugins.flashlight.switchOff();
+                }, 3000);
+
+          } else {
+            showAlert("Flashlight not available on this device", "Error!", function(){
+              Storage.setItem('flash_light', "N/A");
+              window.location.href = redirect;
+            });
+            
+          }
+        });
+
+      }
+
+      function offFlash(){
+        $(".flashUpdate").removeClass('flash-on');
+        $(".flashUpdate").addClass('flash-off');
+        window.plugins.flashlight.switchOff();
+      }
+
+      document.addEventListener("backbutton", function() {          
+        window.plugins.flashlight.switchOff(exitApp, exitApp);        
+      }, false);
+
+      function exitApp() {
+          //navigator.app.exitApp();
+          window.location.href="compass.html";
+        }
+
+        document.addEventListener("pause", function(e){
+          e.preventDefault();
+          isPaushed = true;
+        }, false);
+
+        document.addEventListener("resume", function(e){
+          e.preventDefault();
+          isPaushed = false;
+        }, false);
+      </script>
+    </head>
+
+    <body>
+     <div class="main-wapper" style="display : none;">
+       <div class="header-wapper">
+         <div class="backng">
+           <div class="inr-hdr">
+             <div class="container">
+              <div class="inr-hdr-cnt">
+               <p>Flashlight</p>	
+               <span>Toggle the flashlight on and off</span>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+
+     <div class="section-wapper">
+       <div class="backng">
+         <div class="container">
+           <div class="inner-cnt">
+             <div class="inr-sec-cnt">
+               <p id="countdown">20 seconds</p>
+             </div>
+
+             <div class="inr-sec-backg">
+               <div class="flash-off flashUpdate">
+                 <p>&nbsp;</p>
+               </div>
+               <div class="bck-usr-btm">                           
+                <label class="switch">
+                  <input type="checkbox" class="switch-flash-button">
+                  <div class="slider round"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-wapper">
+     <div class="backng">
+       <div class="container">
+         <div class="inmr-padn">
+          <div class="inr-ftr-btn">
+            <a class="rd fail" href="javascript:void(0);">fail</a>
+            <a class="clr pass" href="javascript:void(0);">pass</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
