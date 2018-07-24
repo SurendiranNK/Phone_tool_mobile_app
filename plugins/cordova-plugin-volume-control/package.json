@@ -1,0 +1,65 @@
+{
+  "_from": "git+https://github.com/jlorente/cordova-plugin-volume-control.git",
+  "_id": "cordova-plugin-volume-control@0.1.8",
+  "_inBundle": false,
+  "_integrity": "sha1-A/RDY3D+1ivH5Kb611iFzw1IvIA=",
+  "_location": "/cordova-plugin-volume-control",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "https://github.com/jlorente/cordova-plugin-volume-control",
+    "rawSpec": "https://github.com/jlorente/cordova-plugin-volume-control",
+    "saveSpec": "git+https://github.com/jlorente/cordova-plugin-volume-control.git",
+    "fetchSpec": "https://github.com/jlorente/cordova-plugin-volume-control.git",
+    "gitCommittish": "master"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "git+https://github.com/jlorente/cordova-plugin-volume-control.git#f6b93a4f06456d5993217ed445561b5913829f17",
+  "_spec": "https://github.com/jlorente/cordova-plugin-volume-control",
+  "_where": "/Users/macbook/Documents/pgProject/CocoonJS/Hardware_iOs",
+  "author": {
+    "name": "José Lorente",
+    "email": "jose.lorente.martin@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/jlorente/cordova-plugin-volume-control/issues"
+  },
+  "bundleDependencies": false,
+  "cordova": {
+    "id": "cordova-plugin-volume-control",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "deprecated": false,
+  "description": "Cordova Volume Control Plugin",
+  "engines": [
+    {
+      "name": "cordova-ios",
+      "version": ">=3.6.0"
+    },
+    {
+      "name": "cordova-android",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/jlorente/cordova-plugin-volume-control#readme",
+  "keywords": [
+    "cordova",
+    "unity",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-volume-control",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jlorente/cordova-plugin-volume-control.git"
+  },
+  "version": "0.1.8"
+}

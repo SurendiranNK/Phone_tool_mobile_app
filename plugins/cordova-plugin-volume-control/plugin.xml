@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin
+  id="cordova-plugin-volume-control"
+  version="0.1.8"
+  xmlns="http://apache.org/cordova/ns/plugins/1.0"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <author email="jose.lorente.martin@gmail.com" href="http://lorentech.es">
+      José Lorente Martín
+  </author>
+  <name>VolumeControl</name>
+  <description>
+     Allows setting and retrieving the media volume of the device.
+  </description>
+  <license>MIT</license>
+  <engines>
+     <engine name="cordova" version=">=3.0.0"/>
+  </engines>
+  <js-module name="VolumeControl" src="www/VolumeControl.js">
+    <clobbers target="cordova.plugins.VolumeControl" />
+  </js-module>
+  <platform name="ios">
+		<framework src="MediaPlayer.framework" />
+    <config-file parent="/*" target="config.xml">
+      <feature name="VolumeControl">
+        <param name="ios-package" value="VolumeControl" />
+      </feature>
+    </config-file>
+    <source-file src="src/ios/VolumeControl.m" />
+  </platform>
+  <platform name="android">
+     <config-file target="res/xml/config.xml" parent="/*">
+        <feature name="VolumeControl">
+           <param name="android-package" value="com.lorentech.cordova.plugins.volumeControl.VolumeControl" />
+        </feature>
+     </config-file>
+     <config-file target="AndroidManifest.xml" parent="/manifest">
+        <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+     </config-file>
+     <source-file src="src/android/VolumeControl.java" target-dir="src/com/lorentech/plugins/volumeControl" />
+  </platform>
+</plugin>
