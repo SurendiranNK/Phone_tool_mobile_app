@@ -1,0 +1,45 @@
+{
+  "name": "com.hardware.test",
+  "version": "1.0.0",
+  "displayName": "ClaraByte",
+  "cordova": {
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "plugins": {
+      "cordova-plugin-media-capture": {},
+      "cordova-plugin-native-ringtones": {},
+      "cordova-plugin-touch-id": {},
+      "cordova-plugin-vibration": {},
+      "cordova-plugin-volume-control": {},
+      "cordova-plugin-whitelist": {},
+      "phonegap-plugin-battery-status": {},
+      "cordova-plugin-file": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-websocket": {},
+      "cordova-android-support-gradle-release": {
+        "ANDROID_SUPPORT_VERSION": "27.+"
+      },
+      "cordova-plugin-websocket-server": {}
+    }
+  },
+  "dependencies": {
+    "cordova-android": "^6.3.0",
+    "cordova-android-support-gradle-release": "^1.4.3",
+    "cordova-ios": "~4.5.2",
+    "cordova-plugin-add-swift-support": "^1.7.2",
+    "cordova-plugin-compat": "^1.2.0",
+    "cordova-plugin-device": "~1.1.7-dev",
+    "cordova-plugin-file": "~4.3.3",
+    "cordova-plugin-media-capture": "~1.4.4-dev",
+    "cordova-plugin-native-ringtones": "https://github.com/TongZhangzt/cordova-plugin-native-ringtones.git",
+    "cordova-plugin-touch-id": "https://github.com/EddyVerbruggen/cordova-plugin-touch-id",
+    "cordova-plugin-vibration": "~2.1.5",
+    "cordova-plugin-volume-control": "https://github.com/jlorente/cordova-plugin-volume-control",
+    "cordova-plugin-websocket": "^0.12.2",
+    "cordova-plugin-websocket-server": "^1.4.10",
+    "cordova-plugin-whitelist": "1",
+    "phonegap-plugin-battery-status": "~1.0.0"
+  }
+}
